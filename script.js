@@ -131,20 +131,47 @@ window.onload = function() { // Ensure Paper.js is ready and DOM is loaded.
             const containerHeight = canvasContainer.clientHeight * 0.85; // Use 85% of container height
             const svgBounds = importedSVG.bounds; 
             if (!svgBounds || !svgBounds.width || !svgBounds.height) {
-                throw new Error('Could not determine bounds of the imported SVG content for scaling.');
+                // If SVG bounds are not valid early, this could be an issue.
+                // The original code already had a check for this, throwing an error.
+                // Let's ensure the error is thrown or handled to prevent NaN in calculations.
+                // For this fix, we'll assume svgBounds *might* be problematic later leading to NaN canvas sizes.
+                console.warn('Imported SVG bounds are missing or invalid. Canvas sizing might be affected.');
+                // Fallback for svgAspectRatio if bounds are bad
+                // This part is tricky as importedSVG.position relies on valid bounds too.
             }
-            const svgAspectRatio = svgBounds.width / svgBounds.height;
+
+            const svgAspectRatio = (svgBounds && svgBounds.width && svgBounds.height) ? (svgBounds.width / svgBounds.height) : 1; // Fallback aspect ratio
+            
             let canvasWidth = containerWidth;
             let canvasHeight = containerWidth / svgAspectRatio;
+
             if (canvasHeight > containerHeight) { // Adjust if calculated height exceeds container limit
                 canvasHeight = containerHeight;
                 canvasWidth = canvasHeight * svgAspectRatio;
             }
+
+            // --- Speculative Fix: Add Fallback for canvas dimensions ---
+            if (!canvasWidth || canvasWidth <= 0 || !canvasHeight || canvasHeight <= 0 || isNaN(canvasWidth) || isNaN(canvasHeight)) {
+                console.warn("Canvas dimensions calculated from SVG were invalid or problematic. Using fallback dimensions.");
+                // Fallback to a reasonable portion of the container
+                canvasWidth = containerWidth > 50 ? containerWidth * 0.8 : 300; // Ensure containerWidth is somewhat valid
+                canvasHeight = containerHeight > 50 ? containerHeight * 0.8 : 200; // Ensure containerHeight is somewhat valid
+                
+                // If importedSVG.position needs to be set, and bounds were bad, this is still an issue.
+                // This fix primarily targets paper.view.viewSize.
+            }
+            // --- End of Speculative Fix ---
+
             paper.view.viewSize = new paper.Size(canvasWidth, canvasHeight); // Set Paper.js canvas size
             // Apply styles to the HTML canvas element
             drawingCanvas.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)'; 
             drawingCanvas.style.backgroundColor = '#ffffff'; 
-            importedSVG.position = paper.view.center; // Center the (hidden) main SVG group
+            // Ensure importedSVG.position is only set if importedSVG.bounds are valid.
+            if (importedSVG.bounds && importedSVG.bounds.width && importedSVG.bounds.height) {
+                 importedSVG.position = paper.view.center;
+            } else {
+                console.warn("Cannot center importedSVG as its bounds are invalid.");
+            }
 
             console.log(`SVG ${filePath} imported. Scaled to fit canvas.`);
             
