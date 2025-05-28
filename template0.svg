@@ -1,0 +1,9 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <title>Sample Mood Template 0</title>
+    <desc>A sample SVG with different shapes to test coloring.</desc>
+    <rect width="100%" height="100%" fill="#f9f9f9" />
+    <circle id="t0_shape1" class="fillable-region" cx="100" cy="100" r="50" fill="#cccccc" stroke="#333333" stroke-width="2"/>
+    <rect id="t0_shape2" class="fillable-region" x="200" y="50" width="150" height="100" fill="#dddddd" stroke="#333333" stroke-width="2"/>
+    <path id="t0_shape3" class="fillable-region" d="M 100 200 L 150 280 L 50 280 Z" fill="#eeeeee" stroke="#333333" stroke-width="2"/>
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="14" fill="#666666">Sample Journal Page 0</text>
+</svg>

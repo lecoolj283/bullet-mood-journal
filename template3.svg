@@ -1,0 +1,9 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <title>Daily Template 3</title>
+    <desc>A sample SVG for day 3.</desc>
+    <rect width="100%" height="100%" fill="#fafafa" />
+    <ellipse id="t3_shape1" class="fillable-region" cx="150" cy="150" rx="70" ry="40" fill="#dbdbdb" stroke="#333333" stroke-width="2"/> <!-- Ellipse -->
+    <rect id="t3_shape2" class="fillable-region" x="250" y="100" width="100" height="150" fill="#e9e9e9" stroke="#333333" stroke-width="2"/>
+    <polygon id="t3_shape3" class="fillable-region" points="50,150 100,100 150,150 100,200" fill="#f1f1f1" stroke="#333333" stroke-width="2"/> <!-- Polygon -->
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="14" fill="#444444">Daily Template 3</text>
+</svg>

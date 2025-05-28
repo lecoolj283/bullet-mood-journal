@@ -1,83 +1,103 @@
-/* Basic reset and body styling */
+/* Bullet Mood Journal - Main Stylesheet */
+
+/* ===== 1. General & Reset Styles ===== */
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* To prevent scrollbars from full-screen app feel */
+    overflow: hidden; /* Prevents scrollbars, maintaining an app-like feel */
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f0f0f0; /* Light gray background, can be changed later */
+    background-color: #f0f0f0; /* Light gray background for the page */
     color: #333; /* Default text color */
+
+    /* Prevent text selection globally - enhances app-like feel */
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE/Edge */
 }
 
-/* Container for the SVG drawing */
-#svg-container {
+/* ===== 1.5 App Container ===== */
+/* This container wraps the main application area, including the canvas. */
+#app-container {
     width: 100%;
-    height: 100%; /* Occupies full height */
+    height: 100%;
+    position: relative; /* For positioning canvas and the (hidden) svg-container */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #e0e0e0; */ /* Optional: for visualizing the container */
 }
 
-/* Styling for SVGs loaded into the container */
-#svg-container svg {
-    max-width: 90%; /* Ensure SVG is not wider than screen */
-    max-height: 80vh; /* Ensure SVG is not taller than 80% of viewport height, leaving space for picker */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Subtle shadow for the SVG */
-    background-color: #ffffff; /* White background for the SVG area itself */
+/* ===== 2. SVG Container (Hidden) & Paper.js Canvas ===== */
+
+/* Original SVG container, now hidden as Paper.js draws onto the canvas. */
+/* It might be used briefly by Paper.js during the import process if not handled carefully, */
+/* but its primary role for direct display is removed. */
+#svg-container {
+    position: absolute; /* Kept in layout flow but hidden, in case any library briefly uses it */
+    width: 100%; 
+    height: 100%;
+    display: flex; /* Kept for consistency if ever made visible for debug */
+    justify-content: center;
+    align-items: center;
+    visibility: hidden; /* Hidden from user view */
+    pointer-events: none; /* Ensure it doesn't interfere with canvas interactions */
 }
 
-/* Placeholder for the color picker */
+/* The HTML Canvas element used by Paper.js for all drawing operations. */
+#drawingCanvas {
+    position: absolute; /* Positioned within #app-container */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centering the canvas */
+    /* width & height are dynamically set by Paper.js in script.js based on SVG aspect ratio and container size. */
+    /* box-shadow and background-color are also applied via script.js after canvas sizing. */
+    /* Optional background for debugging canvas position: */
+    /* background-color: rgba(200, 200, 0, 0.1); */
+}
+
+/* Styles for .fillable-region (original SVG class) are no longer directly relevant for user interaction, */
+/* as Paper.js handles interactions with its own Path objects on the canvas. */
+/* The class might still exist on imported SVG data if Paper.js preserves it. */
+/*
+.fillable-region {
+    pointer-events: auto; 
+    cursor: pointer; 
+}
+*/
+
+/* ===== 3. Color Picker (Pickr) ===== */
+/* Container for the Pickr color picker button. */
 #color-picker-container {
-    position: fixed; /* Fixed position */
-    bottom: 20px; /* Distance from bottom */
+    position: fixed; /* Fixed position at the bottom center of the viewport */
+    bottom: 20px;    /* Distance from bottom, adjust for safe areas on devices if needed */
     left: 50%;
     transform: translateX(-50%); /* Center horizontally */
-    padding: 15px 20px;
-    background-color: #ffffff;
-    border-radius: 12px; /* More rounded corners */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.25); /* More pronounced shadow */
-    z-index: 1000; /* Ensure it's above other content */
-    display: flex; /* For potential internal alignment of color picker elements */
-    align-items: center;
-    justify-content: center;
+    z-index: 1000; /* Ensure it's above other content, including the canvas */
+    
+    padding: 5px; /* Padding around the button */
+    background-color: rgba(255, 255, 255, 0.85); /* Slightly transparent white background for the container */
+    border-radius: 16px; /* More rounded corners for the container */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Pronounced shadow for depth */
 }
 
-#color-picker-container p {
-    margin: 0;
-    color: #555;
-}
-
-/* Container for the Pickr button */
-#color-picker-container {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    /* The Pickr dialog will be positioned relative to the button or viewport */
-}
-
-/* Styling for the button that Pickr will use/create */
-.pickr .pcr-button {
-    width: 50px;  /* Example size, adjust as needed */
-    height: 50px; /* Example size */
-    border-radius: 50%; /* Make it circular if desired */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-/* If not using useAsButton: true, and Pickr creates its own button,
-   you might need to style the .color-picker-button placeholder,
-   or Pickr's generated button directly e.g. .pcr-button */
-
-/* Ensure our placeholder div for the button is minimal if Pickr replaces it,
-   or sized if useAsButton is true and it becomes the button */
+/* This is the div that Pickr uses as its button when `useAsButton: true`. */
 .color-picker-button {
-    /* If useAsButton: false, Pickr might replace this. */
-    /* If useAsButton: true, this IS the button. Style it. */
-    width: 44px; /* Default Pickr button size for 'classic' is around this */
-    height: 44px;
-    /* background-color: #ddd; */ /* Placeholder visual */
-    /* border-radius: 8px; */
+    width: 50px;  /* Increased size for easier tapping on touch devices */
+    height: 50px; /* Increased size */
+    border-radius: 50%; /* Makes the button circular */
+    cursor: pointer; /* Visual cue for interactivity */
+    
+    /* The background of this button will be the currently selected color (handled by Pickr). */
+    /* Add a subtle border to distinguish it if the selected color is very light or matches the container bg. */
+    border: 1px solid rgba(0,0,0,0.1); 
+}
+
+/* Pickr specific overrides - .pcr-button is Pickr's actual button element. */
+/* Ensures our custom button's dimensions and shape are respected by Pickr's styling. */
+.pickr .pcr-button {
+    width: 100% !important; 
+    height: 100% !important;
+    border-radius: inherit !important; /* Inherit border-radius from .color-picker-button */
 }
