@@ -1,0 +1,83 @@
+/* Basic reset and body styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* To prevent scrollbars from full-screen app feel */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f0f0f0; /* Light gray background, can be changed later */
+    color: #333; /* Default text color */
+}
+
+/* Container for the SVG drawing */
+#svg-container {
+    width: 100%;
+    height: 100%; /* Occupies full height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #e0e0e0; */ /* Optional: for visualizing the container */
+}
+
+/* Styling for SVGs loaded into the container */
+#svg-container svg {
+    max-width: 90%; /* Ensure SVG is not wider than screen */
+    max-height: 80vh; /* Ensure SVG is not taller than 80% of viewport height, leaving space for picker */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Subtle shadow for the SVG */
+    background-color: #ffffff; /* White background for the SVG area itself */
+}
+
+/* Placeholder for the color picker */
+#color-picker-container {
+    position: fixed; /* Fixed position */
+    bottom: 20px; /* Distance from bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    padding: 15px 20px;
+    background-color: #ffffff;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25); /* More pronounced shadow */
+    z-index: 1000; /* Ensure it's above other content */
+    display: flex; /* For potential internal alignment of color picker elements */
+    align-items: center;
+    justify-content: center;
+}
+
+#color-picker-container p {
+    margin: 0;
+    color: #555;
+}
+
+/* Container for the Pickr button */
+#color-picker-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    /* The Pickr dialog will be positioned relative to the button or viewport */
+}
+
+/* Styling for the button that Pickr will use/create */
+.pickr .pcr-button {
+    width: 50px;  /* Example size, adjust as needed */
+    height: 50px; /* Example size */
+    border-radius: 50%; /* Make it circular if desired */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* If not using useAsButton: true, and Pickr creates its own button,
+   you might need to style the .color-picker-button placeholder,
+   or Pickr's generated button directly e.g. .pcr-button */
+
+/* Ensure our placeholder div for the button is minimal if Pickr replaces it,
+   or sized if useAsButton is true and it becomes the button */
+.color-picker-button {
+    /* If useAsButton: false, Pickr might replace this. */
+    /* If useAsButton: true, this IS the button. Style it. */
+    width: 44px; /* Default Pickr button size for 'classic' is around this */
+    height: 44px;
+    /* background-color: #ddd; */ /* Placeholder visual */
+    /* border-radius: 8px; */
+}
