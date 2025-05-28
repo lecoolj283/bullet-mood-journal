@@ -1,0 +1,9 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+    <title>Daily Template 2</title>
+    <desc>A sample SVG for day 2.</desc>
+    <rect width="100%" height="100%" fill="#f8f8f8" /> <!-- Slightly different background -->
+    <circle id="t2_shape1" class="fillable-region" cx="120" cy="120" r="60" fill="#d0d0d0" stroke="#333333" stroke-width="2"/> <!-- Different size/pos -->
+    <rect id="t2_shape2" class="fillable-region" x="220" y="70" width="130" height="80" fill="#e0e0e0" stroke="#333333" stroke-width="2"/>
+    <path id="t2_shape3" class="fillable-region" d="M 70 220 L 120 290 L 20 290 Z" fill="#f0f0f0" stroke="#333333" stroke-width="2"/> <!-- Different path -->
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="14" fill="#555555">Daily Template 2</text>
+</svg>
